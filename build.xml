@@ -1,0 +1,33 @@
+<project name="TestProject" default="dist" basedir="./module3/ant-task">
+
+<target name="init">
+	<property file="config/project.properties"/>
+	<mkdir dir="${build.dir}"/>
+</target>
+
+<target name="compile" depends="init" >
+	<!--<echo message="Compiling ${lib}/*.jar to the ${build}" /> -->
+	<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+		<classpath>
+			<pathelement path="${lib.dir}/commons-collections-3.2.1.jar"/>
+		</classpath>
+	</javac>
+
+</target>
+
+<target name="dist" depends="compile" >
+	<mkdir dir="${dist.dir}/lib"/>
+	<jar jarfile="${dist.dir}/lib/testProject.jar" basedir="${build.dir}"/>
+</target>
+
+<target name="run">
+	<echo message="Run"/>
+        <java jar="${test.dir}/com/test/UnitTest.java" fork="true"/>
+</target>
+
+<target name="clean">
+	<echo message="Cleaning the ${build}"/>
+	<delete dir="${build.dir}"/>
+</target>
+</project>
+
