@@ -1,25 +1,34 @@
-<project name="TestProject" default="dist" basedir=".">
+<project name="TestProject" default="dist" basedir="./module3/ant-task">
 
-  <property name="src" location="src"/>
-  <property name="build" location="build"/>
-  <property name="dist"  location="dist"/>
+<target name="init">
+	<property file="config/project.properties"/>
+	<mkdir dir="${build.dir}"/>
+</target>
 
-  <target name="init">
-    <mkdir dir="${build}"/>
-  </target>
+<target name="compile" depends="init" >
+	<!--<echo message="Compiling ${lib}/*.jar to the ${build}" /> -->
+	<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+		<classpath>
+			<pathelement path="${lib.dir}/commons-collections-3.2.1.jar"/>
+		</classpath>
+	</javac>
 
-  <target name="compile" depends="init" >
-    <javac srcdir="${src}" destdir="${build}"/>
-  </target>
+</target>
 
-  <target name="dist" depends="compile" >
-    <mkdir dir="${dist}/lib"/>
-    <jar jarfile="${dist}/lib/testProject.jar" basedir="${build}"/>
-  </target>
+<target name="dist" depends="compile" >
+	<mkdir dir="${dist.dir}/lib"/>
+	<jar jarfile="${dist.dir}/lib/testProject.jar" basedir="${build.dir}"/>
+</target>
 
-  <target name="clean">
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
-  </target>
+<target name="run">
+	<echo message="Run"/>
+        <java jar="${test.dir}/com/test/UnitTest.java" fork="true"/>
+</target>
 
+
+<target name="clean">
+	<echo message="Cleaning the ${build}"/>
+	<delete dir="${build.dir}"/>
+</target>
 </project>
+
